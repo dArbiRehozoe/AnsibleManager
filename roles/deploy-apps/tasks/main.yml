@@ -1,0 +1,6 @@
+---
+- name: Deploy applications (e.g., kube-proxy)
+  command: kubectl apply -f {{ item }}
+  loop:
+    - /path/to/kube-proxy.yaml
+  tags: apps

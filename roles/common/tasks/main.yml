@@ -1,0 +1,13 @@
+---
+- name: Update system packages
+  apt:
+    upgrade: safe
+    update_cache: yes
+
+- name: Install essential packages
+  apt:
+    name: "{{ item }}"
+    state: present
+  loop:
+    - curl
+    - vim

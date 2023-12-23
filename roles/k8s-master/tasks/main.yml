@@ -1,0 +1,21 @@
+---
+- name: Initialize Kubernetes master
+  command: kubeadm init --pod-network-cidr=10.244.0.0/16
+  args:
+    creates: /etc/kubernetes/admin.conf
+  become: false
+  register: kubeadm_output
+  tags: master
+
+- name: Set up kubeconfig for user
+  command: "{{ kubeadm_output.stdout }}"
+  become: false
+  tags: master
+  
+- name: Install Calico network add-on
+  command: kubectl apply -f https://docs.projectcalico.org/manifests/calico.yaml
+  args:
+    creates: /etc/kubernetes/calico.yaml
+  become: false
+  when: "'master' in group_names"
+  tags: master

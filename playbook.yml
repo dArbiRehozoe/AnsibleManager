@@ -1,0 +1,30 @@
+---
+- name: Deploy Kubernetes Cluster
+  hosts: all
+  become: true
+  gather_facts: true
+  roles:
+    - role: common
+    - role: network
+    - role: k8s-dependencies
+    
+- name: Apply k8s-master role only on master
+  hosts: master
+  roles:
+    - role: k8s-master
+      tags: master
+
+- name: Apply k8s-worker role only on workers
+  hosts: worker
+  roles:
+    - role: k8s-worker
+      tags: workers
+
+
+- name: Deploy Apps
+  hosts: all
+  become: true
+  gather_facts: true
+
+  roles:
+    - role: deploy-apps

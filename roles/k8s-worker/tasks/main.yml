@@ -1,0 +1,4 @@
+---
+- name: Join worker nodes to the cluster
+  command: "{{ hostvars[groups['master'][0]]['kubeadm_output']['stdout'] | regex_replace('kubeadm join', 'kubeadm join --token YOUR_TOKEN --discovery-token-unsafe-skip-ca-verification') }}"
+  when: "'worker' in group_names"

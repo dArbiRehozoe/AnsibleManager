@@ -1,0 +1,14 @@
+---
+- name: Apply network sysctl settings
+  template:
+    src: sysctl.conf.j2
+    dest: /etc/sysctl.conf
+  notify: Reload sysctl
+  tags: network
+
+- name: Load sysctl settings
+  command: sysctl --system
+  tags: network
+
+
+
